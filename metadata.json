@@ -1,0 +1,5 @@
+{
+  "name": "Interactive Team Showcase",
+  "description": "A modern, responsive website featuring an interactive 'Team' section. Team members are displayed as tiles that animate on hover, showcasing their profile picture, name, role, and description.",
+  "requestFramePermissions": []
+}
