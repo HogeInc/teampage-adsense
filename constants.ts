@@ -1,54 +1,60 @@
 import { TeamMember } from './types';
 
-// NOTE: Using placeholder images from picsum.photos as the provided IPFS links may not resolve to actual images.
-// The structure remains the same.
 export const TEAM_MEMBERS: TeamMember[] = [
   {
     name: "Sir HODL of Diamondhands",
     role: "Chief Meme Officer (CMO)",
     description: "Master of memes and diamond hands. Ensures our token stays spicy and never goes to the moon alone.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/DiamondHandsHoge.jpg"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/DiamondHandsHoge.jpg",
+    bio: "Born in the volatile fires of the 2017 bull run, Sir HODL earned his title by refusing to sell even when the charts looked like a vertical drop off a cliff. Legend says his hands are actually composed of pressurized carbon, making them literal diamonds. As CMO, he oversees the 'Vibe Department,' where he calibrates the precisely optimal level of irony required to sustain a community through a three-year winter. He doesn't sleep; he just waits for the next candle.\n\nBeyond his administrative duties, Sir HODL is a renowned historian of early internet culture, often seen lecturing on the evolution of 'stonks' in various decentralized metaverses. He maintains a curated gallery of rare digital artifacts that he claims will be the currency of the 22nd century. His philosophy is simple: if you can't handle the 90% dip, you don't deserve the 10,000% moonshot.\n\nIn his rare moments of downtime, he can be found tinkering with his vintage ASIC miners or practicing 'Digital Silence,' a meditation technique where he ignores all market alerts for exactly four minutes. He believes that the true strength of a project isn't found in its market cap, but in the thickness of its community's skin."
   },
   {
     name: "Shiba Sage",
     role: "Vibe Architect",
-    description: "Spends 80% of his time meditating on coin charts and the other 20% predicting the next big pump. Usually right.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/Hodl_onto_your_hoge.gif"
+    description: "Spends 80% of his time meditating on coin charts and the other 20% predicting the next big pump.",
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/Hodl_onto_your_hoge.gif",
+    bio: "The Shiba Sage doesn't see lines on a screen; he sees the breath of the market. Having spent a decade in a digital monastery high in the clouds of a decentralized network, he returned to the world with a singular mission: to align the community's energy with the frequency of the moon. His architecture isn't built of stone, but of sentiment, momentum, and well-timed 'gm' posts.\n\nHe is the author of 'The Art of the HODL,' a series of scrolls that have been digitized and distributed across various P2P networks. Students of the Sage learn that a 'pump' is merely a transition of energy from the impatient to the enlightened. He often uses cryptic metaphors involving bowls of digital ramen to explain complex liquidity pool dynamics to the uninitiated.\n\nDespite his mystical aura, the Sage is deeply involved in the technical side of vibe-balancing. He utilizes custom-built sentiment analysis algorithms that scan the 'collective consciousness' of social media to determine the exact moment to deploy a high-tier meme. To him, the blockchain is a living entity, and every transaction is a heartbeat in the grand design of global decentralization."
   },
   {
     name: "Crypto Kitty",
     role: "Head of Naps & Security",
     description: "Guards the treasury with an iron paw. Distracted only by laser pointers and sudden market dips.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/Tanjiro_Kamado_Hoge.png"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/Tanjiro_Kamado_Hoge.png",
+    bio: "Don't let the whiskers fool you. Crypto Kitty is a certified blockchain forensic expert who has clawed her way through countless exploits. Her security protocols are as sharp as her claws, and her 'Napping' is actually a high-performance deep-learning state where she simulates millions of attack vectors simultaneously. She is the thin line between decentralization and total chaos.\n\nHer famous 'Audit of Nine Lives' is a legendary security check that has identified vulnerabilities in some of the most complex smart contracts in existence. While other security experts use software, Kitty relies on her primal instincts; if a line of code doesn't 'smell' right, she won't let it near the mainnet. She is known to bat away malicious bots with a single swipe of her paw, maintaining a 99.9% uptime for the project's digital defenses.\n\nWhen she isn't hunting down scammers, she enjoys lounging on warm server racks and chasing laser pointers that she suspects are actually advanced phishing attempts. Her favorite toy is a physical hardware wallet that she carries everywhere, ensuring that even in her deepest sleep, the keys are never far from her reach."
   },
   {
     name: "The Pepe Prophet",
     role: "Supreme Frog of Finance",
     description: "Sees the future in the ripples of his pond. His prophecies are as cryptic as they are profitable.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/vbhk_gbhk.gif"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/vbhk_gbhk.gif",
+    bio: "Emerging from the depths of the Forbidden Swamp, the Pepe Prophet brought with him the ancient scrolls of Liquidity. He speaks only in riddles and rare emojis, but those who listen closely find themselves catching every bottom. He believes that the universe is a series of green candles waiting to happen, and that the ultimate truth is found in the depths of a mempool.\n\nHis followers often gather at the edge of his digital pond to receive his daily 'Leap of Faith'—a single, high-resolution emoji that dictates the day's trading sentiment. While skeptics call him a mere amphibian, his track record of predicting the exact second of a 'flippening' has earned him a cult-like status among the most seasoned degens. He claims to have once conversed with Satoshi Nakamoto in a dream involving a giant lily pad and a recursive algorithm.\n\nIn the evenings, the Prophet retreats to his moss-covered command center where he monitors the flow of gas fees across various layer-twos. He interprets the rising costs as celestial omens, often warning the community to 'stay moist' during periods of low volatility. His ultimate goal is to see every pond in the world connected via a high-speed, decentralized frog-net."
   },
   {
     name: "GM Gnome",
     role: "Community Morale Goblin",
     description: "Spreads 'gm' vibes across all channels, 24/7. Powered by coffee and the tears of paper hands.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/IMG_2493.jpg"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/IMG_2493.jpg",
+    bio: "Small in stature but massive in spirit, the GM Gnome lives inside the Discord servers. He is the first to say 'gm' and the last to say 'gn'. It is whispered that if the GM Gnome ever stops posting, the entire internet will experience a 404 error. He sustains himself on high-frequency trading noise and the collective enthusiasm of ten thousand degens.\n\nHis 'Eternal GM' script is a marvel of social engineering, capable of responding to over 500 different languages with the same positive energy. He has successfully mediated countless 'FUD' wars by simply offering a digital cookie and a reminder that we are all 'gonna make it'. Despite his title as a 'Goblin,' his heart is as gold as a 24k token, and his dedication to community spirit is unrivaled.\n\nWhen the markets are red, the Gnome works overtime, hosting virtual campfire sessions where he tells stories of the 'Old Days' when gas fees were only two digits. He believes that morale is the only true currency, and as long as the community is laughing, the project is winning. He wears his pointed red hat as a beacon of hope in the dark corners of the web."
   },
   {
     name: "Captain Moonshot",
     role: "Rocket Fuel Engineer",
     description: "In charge of the launch sequence. If the chart goes vertical, you know who to thank for the G-forces.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/IMG_20210330_161236_886.jpg"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/IMG_20210330_161236_886.jpg",
+    bio: "The Captain graduated top of his class from the Intergalactic Academy of Speculation. He specializes in thermal dynamics—specifically, how to handle the heat when a project enters the stratosphere. His helmet isn't just for show; it's pressurized to withstand the intense FOMO generated during a parabolic run. He never looks back at the launchpad.\n\nHis primary tool is a custom-engineered 'Hype-Drive' that converts positive social media sentiment directly into upward market pressure. Critics argue that his methods are dangerous, but the Captain points to the trail of smoke behind every successful launch as proof of his genius. He maintains that 'down' is just a perspective for people who haven't installed his proprietary vertical-goggles.\n\nIn his workshop, he is constantly experimenting with new fuel mixtures, often combining 'Pure Community Enthusiasm' with 'Strategic Burn Mechanisms' to achieve maximum escape velocity. He dreams of a day when the moon is not just a destination, but a permanent base of operations for the entire DeFi ecosystem. 'Safety second, moon first' is his unofficial motto, much to the chagrin of the legal department."
   },
   {
     name: "Dr. Wen Lambo",
     role: "Aspirational Intern",
     description: "Constantly asks 'wen lambo?' in every meeting. Keeps the team focused on the ultimate goal.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/wake_up_hoge_you_almost_there.png"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/wake_up_hoge_you_almost_there.png",
+    bio: "Dr. Wen Lambo holds a PhD in Luxury Automotive Theoretical Studies. While technically an intern, his persistence is the engine of the project. He represents the voice of the people, the dreamers, and those who believe that one day, their garage will hold exactly what they've been typing in the chat for years. He has already picked out the upholstery color.\n\nHis thesis, 'The Socio-Economic Impact of 0-60 Times on Token Holders,' is a required reading in many avant-garde business schools. He maintains a massive spreadsheet of every known supercar configuration, meticulously calculating the exact price point at which the average HODLer can afford a carbon-fiber spoiler. His presence in meetings ensures that the team never loses sight of the tangible rewards of a successful decentralized future.\n\nWhen he isn't asking the eponymous question, he is practicing his 'celebratory garage reveal' in front of a mirror. He remains convinced that the blockchain is just a really slow way to build an Italian sports car, and he won't rest until every member of the community has a set of keys. His internship has lasted three years, but he views it as a 'long-term investment in his own legend.'"
   },
   {
     name: "The Chart Wizard",
     role: "Master of Triangles",
     description: "Draws lines on charts until they make sense. His TA is feared by bears and celebrated by bulls.",
-    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/photo_2021-10-08_18-41-30.jpg"
+    imageUrl: "https://ipfs.io/ipfs/QmW9L7oVPdKz1NYN4czALTXPUjJA4gH2Gtda3M19WQ5pVF/photo_2021-10-08_18-41-30.jpg",
+    bio: "The Wizard lives in a tower of multi-monitor setups. He can spot a head-and-shoulders pattern from three subreddits away. Armed with a magic stylus, he weaves complex webs of Fibonacci retracements and Bollinger bands. He knows that the trend is your friend, but he's the one who introduced you in the first place.\n\nHis secret laboratory is rumored to contain a mainframe that runs on pure geometry. He has pioneered several 'Impossible Patterns,' including the 'Triple-Inverted-Moon-Dragon' and the 'Golden Spiral Of Eternal Profit.' While some call technical analysis 'astrology for men,' the Wizard just smiles and points to his perfectly predicted breakout levels. He believes that the universe is written in candle code.\n\nOn weekends, he teaches 'Geometry for Degens' classes, where he explains that a triangle is not just a shape, but a portal to a new price discovery. He rarely leaves his dark room, claiming that the sunlight messes with his perception of 'Support and Resistance.' To the Wizard, life is just one giant 15-minute timeframe, and we are all just candles waiting for the next wick."
   }
 ];
