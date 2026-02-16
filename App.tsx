@@ -11,6 +11,15 @@ const App: React.FC = () => {
   const [view, setView] = useState<'home' | 'privacy' | 'member' | 'satire'>('home');
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
+  // Dynamically load AdSense after initial mount to prevent favicon loading hang
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2514992641687016";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.head.appendChild(script);
+  }, []);
+
   // Scroll to top when switching views
   useEffect(() => {
     window.scrollTo(0, 0);

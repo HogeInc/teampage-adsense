@@ -20,70 +20,96 @@ const AdBanner: React.FC<AdBannerProps> = ({
   useEffect(() => {
     if (initializedRef.current) return;
 
-    const checkStatus = () => {
+    const checkAdStatus = () => {
       if (!adRef.current) return;
-
-      // Google AdSense sets 'data-ad-status' attribute
+      // Google AdSense sets 'data-ad-status' attribute on the ins element
       const googleStatus = adRef.current.getAttribute('data-ad-status');
       
       if (googleStatus === 'filled') {
         setStatus('filled');
+        return true;
       } else if (googleStatus === 'unfilled') {
         setStatus('unfilled');
+        return true;
       }
+      return false;
     };
 
-    // Observe changes to the ad element's attributes
+    // Observe changes to the ad element's attributes to detect when AdSense fills it
     const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
+      for (const mutation of mutations) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-ad-status') {
-          checkStatus();
+          if (checkAdStatus()) {
+            observer.disconnect(); // Stop observing once we have a definitive status
+          }
         }
-      });
+      }
     });
 
     if (adRef.current) {
       observer.observe(adRef.current, { attributes: true });
     }
 
-    try {
-      // @ts-ignore
-      const adsbygoogle = window.adsbygoogle || [];
-      
-      // If the script didn't load at all, it's likely blocked
-      // @ts-ignore
-      if (typeof window.adsbygoogle === 'undefined' || (Array.isArray(adsbygoogle) && adsbygoogle.length === 0 && !document.querySelector('script[src*="adsbygoogle.js"]'))) {
-        setStatus('blocked');
-      } else {
-        adsbygoogle.push({});
+    const initAd = () => {
+      try {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
         initializedRef.current = true;
+        // Immediate check in case it fills instantly
+        checkAdStatus();
+      } catch (e) {
+        console.debug(`[AdBanner:${dataAdSlot}] AdSense push error:`, e);
       }
-    } catch (e) {
-      console.debug(`[AdBanner:${dataAdSlot}] AdSense initialization error:`, e);
-      setStatus('blocked');
-    }
+    };
 
-    // Fallback: If after 5 seconds it's still "loading", check if it's actually blocked
-    const timeout = setTimeout(() => {
-      if (status === 'loading') {
-        if (adRef.current && adRef.current.offsetHeight === 0) {
-          setStatus('blocked');
-        } else {
-          checkStatus();
-        }
+    // Start initialization
+    initAd();
+
+    // Check script loading and status after a reasonable delay
+    const statusCheckInterval = setInterval(() => {
+      if (checkAdStatus()) {
+        clearInterval(statusCheckInterval);
       }
-    }, 5000);
+    }, 1000);
+
+    // Ad-block detection logic: 
+    // Increased to 8s to give dynamic script injection time to resolve
+    const blockCheckTimeout = setTimeout(() => {
+      // @ts-ignore
+      const isScriptLoaded = typeof window.adsbygoogle !== 'undefined' && (window.adsbygoogle.loaded === true || Array.isArray(window.adsbygoogle));
+      const isFilled = adRef.current?.getAttribute('data-ad-status') === 'filled';
+      
+      // Only declare blocked if the script is totally missing and the slot isn't filled
+      // @ts-ignore
+      const reallyLoaded = window.adsbygoogle && window.adsbygoogle.loaded === true;
+      if (!reallyLoaded && !isFilled && status === 'loading') {
+        setStatus('blocked');
+        clearInterval(statusCheckInterval);
+      }
+    }, 8000);
+
+    // Final fallback to prevent infinite loading if AdSense is silent
+    const finalCheckTimeout = setTimeout(() => {
+      if (status === 'loading') {
+        if (!checkAdStatus()) {
+          setStatus('unfilled');
+        }
+        clearInterval(statusCheckInterval);
+      }
+    }, 12000);
 
     return () => {
       observer.disconnect();
-      clearTimeout(timeout);
+      clearInterval(statusCheckInterval);
+      clearTimeout(blockCheckTimeout);
+      clearTimeout(finalCheckTimeout);
     };
   }, [dataAdSlot, status]);
 
   return (
-    <div className="my-8 flex flex-col items-center justify-center w-full min-h-[120px] transition-all duration-500">
-      {/* Header Label - Only show if not definitively blocked */}
-      {status !== 'blocked' && (
+    <div className="my-8 flex flex-col items-center justify-center w-full min-h-[120px] transition-all duration-500 overflow-hidden">
+      {/* Label - Always centered above the ad area if not unfilled/blocked */}
+      {(status === 'loading' || status === 'filled') && (
         <div className="flex items-center gap-2 mb-4 select-none opacity-20 hover:opacity-40 transition-opacity">
           <div className="h-[1px] w-6 bg-slate-500"></div>
           <span className="text-[9px] uppercase tracking-[0.3em] text-slate-400 font-bold">
@@ -93,16 +119,18 @@ const AdBanner: React.FC<AdBannerProps> = ({
         </div>
       )}
       
-      <div className="w-full max-w-5xl flex items-center justify-center relative">
-        {/* The Actual Ad */}
+      <div className="w-full max-w-5xl flex items-center justify-center relative min-h-[90px]">
+        {/* The AdSense Element */}
         <ins
           ref={adRef}
           className="adsbygoogle"
           style={{ 
-            display: status === 'blocked' || status === 'unfilled' ? "none" : "block", 
+            display: (status === 'blocked' || status === 'unfilled') ? "none" : "block", 
             width: "100%",
             textAlign: "center",
-            minHeight: "90px"
+            minHeight: status === 'filled' ? "90px" : "1px",
+            opacity: status === 'filled' ? 1 : 0,
+            transition: 'opacity 0.4s ease'
           }}
           data-ad-client="ca-pub-2514992641687016"
           data-ad-slot={dataAdSlot}
@@ -110,32 +138,35 @@ const AdBanner: React.FC<AdBannerProps> = ({
           data-full-width-responsive={dataFullWidthResponsive.toString()}
         />
 
+        {/* Loading Spinner - Absolutely centered to avoid jumping */}
+        {status === 'loading' && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 animate-pulse bg-slate-900/50 rounded-xl z-10 p-4">
+            <div className="relative flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-cyan-500/10 rounded-full"></div>
+              <div className="absolute top-0 left-0 w-8 h-8 border-2 border-transparent border-t-cyan-500 rounded-full animate-spin"></div>
+            </div>
+            <span className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Syncing Network...</span>
+          </div>
+        )}
+
         {/* AdBlock Detected UI */}
         {status === 'blocked' && (
-          <div className="p-6 border border-dashed border-slate-700 rounded-xl bg-slate-800/50 text-center animate-in fade-in zoom-in duration-300">
-            <p className="text-slate-400 text-sm font-medium">
-              Ads help us keep the servers running.
+          <div className="p-6 border border-dashed border-slate-700 rounded-xl bg-slate-800/30 text-center animate-in fade-in zoom-in duration-300 w-full max-w-md mx-auto">
+            <p className="text-slate-400 text-xs font-medium">
+              Help keep this project decentralized.
             </p>
-            <p className="text-cyan-500 text-xs mt-1 font-bold uppercase tracking-wider">
-              Please consider disabling your adblocker
+            <p className="text-cyan-500 text-[10px] mt-1 font-bold uppercase tracking-wider">
+              Please consider white-listing our ads
             </p>
           </div>
         )}
 
-        {/* Unfilled (No inventory) UI */}
+        {/* Unfilled UI (Inventory Empty) */}
         {status === 'unfilled' && (
-          <div className="p-6 border border-slate-800 rounded-xl bg-slate-900/30 text-center">
-            <p className="text-slate-500 text-xs italic">
-              Space reserved for partners
+          <div className="p-4 border border-slate-800/50 rounded-xl bg-slate-900/10 text-center w-full max-w-md mx-auto">
+            <p className="text-slate-700 text-[10px] italic">
+              Space reserved for community partners
             </p>
-          </div>
-        )}
-
-        {/* Loading Spinner / Placeholder */}
-        {status === 'loading' && (
-          <div className="flex flex-col items-center gap-2 animate-pulse">
-            <div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
-            <span className="text-[10px] text-slate-600 uppercase tracking-widest">Loading...</span>
           </div>
         )}
       </div>

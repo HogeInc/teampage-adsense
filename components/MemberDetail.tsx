@@ -25,6 +25,8 @@ const MemberDetail: React.FC<MemberDetailProps> = ({ member, onBack }) => {
               <img 
                 src={member.imageUrl} 
                 alt={`${member.name} - ${member.role}`} 
+                loading="lazy"
+                decoding="async"
                 className="w-full aspect-square object-cover"
               />
             </div>

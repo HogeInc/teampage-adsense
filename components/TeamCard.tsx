@@ -17,6 +17,8 @@ const TeamCard: React.FC<TeamCardProps> = ({ member, onClick }) => {
         <img
           src={member.imageUrl}
           alt={`Profile of ${member.name}`}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
