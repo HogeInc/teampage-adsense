@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TeamCard from './components/TeamCard';
 import { TEAM_MEMBERS } from './constants';
 import AdBanner from './components/AdBanner';
@@ -11,18 +11,18 @@ const App: React.FC = () => {
   const [view, setView] = useState<'home' | 'privacy' | 'member' | 'satire'>('home');
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
-  // Helper to parse the hash and set the view accordingly
-  const syncViewWithHash = () => {
-    const hash = window.location.hash.replace('#', '');
+  // Helper to parse the current pathname and set the view accordingly
+  const syncViewWithUrl = useCallback(() => {
+    const path = window.location.pathname;
     
-    if (hash === 'privacy') {
+    if (path === '/privacy') {
       setView('privacy');
       setSelectedMember(null);
-    } else if (hash === 'satire') {
+    } else if (path === '/satire') {
       setView('satire');
       setSelectedMember(null);
-    } else if (hash.startsWith('member/')) {
-      const memberSlug = hash.replace('member/', '');
+    } else if (path.startsWith('/member/')) {
+      const memberSlug = path.replace('/member/', '');
       const member = TEAM_MEMBERS.find(m => 
         m.name.toLowerCase().replace(/\s+/g, '-') === memberSlug
       );
@@ -37,14 +37,20 @@ const App: React.FC = () => {
       setView('home');
       setSelectedMember(null);
     }
-  };
-
-  // Sync on initial load and on hash change
-  useEffect(() => {
-    syncViewWithHash();
-    window.addEventListener('hashchange', syncViewWithHash);
-    return () => window.removeEventListener('hashchange', syncViewWithHash);
   }, []);
+
+  // Sync on initial load and handle browser back/forward buttons
+  useEffect(() => {
+    syncViewWithUrl();
+    window.addEventListener('popstate', syncViewWithUrl);
+    return () => window.removeEventListener('popstate', syncViewWithUrl);
+  }, [syncViewWithUrl]);
+
+  // Custom navigation function using History API
+  const navigateTo = (path: string) => {
+    window.history.pushState({}, '', path);
+    syncViewWithUrl();
+  };
 
   // Dynamically load AdSense after initial mount
   useEffect(() => {
@@ -62,15 +68,11 @@ const App: React.FC = () => {
 
   const handleMemberClick = (member: TeamMember) => {
     const slug = member.name.toLowerCase().replace(/\s+/g, '-');
-    window.location.hash = `member/${slug}`;
+    navigateTo(`/member/${slug}`);
   };
 
   const handleBack = () => {
-    window.location.hash = '';
-  };
-
-  const navigateTo = (newView: 'home' | 'privacy' | 'satire') => {
-    window.location.hash = newView === 'home' ? '' : newView;
+    navigateTo('/');
   };
 
   return (
@@ -123,19 +125,19 @@ const App: React.FC = () => {
             <p>&copy; 2021-{new Date().getFullYear()} Hoge Inc. All rights reserved.</p>
             <nav className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
               <button 
-                onClick={() => navigateTo('home')} 
+                onClick={() => navigateTo('/')} 
                 className={`hover:text-cyan-400 transition-colors ${view === 'home' ? 'text-cyan-400 font-bold' : ''}`}
               >
                 Team
               </button>
               <button 
-                onClick={() => navigateTo('privacy')} 
+                onClick={() => navigateTo('/privacy')} 
                 className={`hover:text-cyan-400 transition-colors ${view === 'privacy' ? 'text-cyan-400 font-bold' : ''}`}
               >
                 Privacy Policy
               </button>
               <button 
-                onClick={() => navigateTo('satire')} 
+                onClick={() => navigateTo('/satire')} 
                 className={`hover:text-orange-400 transition-colors ${view === 'satire' ? 'text-orange-400 font-bold' : ''}`}
               >
                 Satire Disclaimer
