@@ -11,7 +11,42 @@ const App: React.FC = () => {
   const [view, setView] = useState<'home' | 'privacy' | 'member' | 'satire'>('home');
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
 
-  // Dynamically load AdSense after initial mount to prevent favicon loading hang
+  // Helper to parse the hash and set the view accordingly
+  const syncViewWithHash = () => {
+    const hash = window.location.hash.replace('#', '');
+    
+    if (hash === 'privacy') {
+      setView('privacy');
+      setSelectedMember(null);
+    } else if (hash === 'satire') {
+      setView('satire');
+      setSelectedMember(null);
+    } else if (hash.startsWith('member/')) {
+      const memberSlug = hash.replace('member/', '');
+      const member = TEAM_MEMBERS.find(m => 
+        m.name.toLowerCase().replace(/\s+/g, '-') === memberSlug
+      );
+      if (member) {
+        setSelectedMember(member);
+        setView('member');
+      } else {
+        setView('home');
+        setSelectedMember(null);
+      }
+    } else {
+      setView('home');
+      setSelectedMember(null);
+    }
+  };
+
+  // Sync on initial load and on hash change
+  useEffect(() => {
+    syncViewWithHash();
+    window.addEventListener('hashchange', syncViewWithHash);
+    return () => window.removeEventListener('hashchange', syncViewWithHash);
+  }, []);
+
+  // Dynamically load AdSense after initial mount
   useEffect(() => {
     const script = document.createElement('script');
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2514992641687016";
@@ -26,13 +61,16 @@ const App: React.FC = () => {
   }, [view, selectedMember]);
 
   const handleMemberClick = (member: TeamMember) => {
-    setSelectedMember(member);
-    setView('member');
+    const slug = member.name.toLowerCase().replace(/\s+/g, '-');
+    window.location.hash = `member/${slug}`;
   };
 
   const handleBack = () => {
-    setView('home');
-    setSelectedMember(null);
+    window.location.hash = '';
+  };
+
+  const navigateTo = (newView: 'home' | 'privacy' | 'satire') => {
+    window.location.hash = newView === 'home' ? '' : newView;
   };
 
   return (
@@ -82,22 +120,22 @@ const App: React.FC = () => {
         <footer className="text-center mt-16 text-slate-500 border-t border-slate-800 pt-8">
           <AdBanner dataAdSlot="6616142400" />
           <div className="flex flex-col items-center gap-4">
-            <p>&copy; {new Date().getFullYear()} Hoge Inc. All rights reserved.</p>
+            <p>&copy; 2021-{new Date().getFullYear()} Hoge Inc. All rights reserved.</p>
             <nav className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
               <button 
-                onClick={handleBack} 
+                onClick={() => navigateTo('home')} 
                 className={`hover:text-cyan-400 transition-colors ${view === 'home' ? 'text-cyan-400 font-bold' : ''}`}
               >
                 Team
               </button>
               <button 
-                onClick={() => setView('privacy')} 
+                onClick={() => navigateTo('privacy')} 
                 className={`hover:text-cyan-400 transition-colors ${view === 'privacy' ? 'text-cyan-400 font-bold' : ''}`}
               >
                 Privacy Policy
               </button>
               <button 
-                onClick={() => setView('satire')} 
+                onClick={() => navigateTo('satire')} 
                 className={`hover:text-orange-400 transition-colors ${view === 'satire' ? 'text-orange-400 font-bold' : ''}`}
               >
                 Satire Disclaimer
