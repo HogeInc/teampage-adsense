@@ -142,6 +142,14 @@ const App: React.FC = () => {
               >
                 Satire Disclaimer
               </button>
+              <a 
+                href="https://memes.hoge.team"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-pink-400 transition-colors"
+              >
+                More Memes
+              </a>
             </nav>
           </div>
         </footer>
